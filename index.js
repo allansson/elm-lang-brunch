@@ -4,6 +4,7 @@ var fs = require('fs');
 var url = require('url');
 var path = require('path');
 var child_process = require('child_process');
+var cross_spawn = require('cross-spawn');
 var make = require.resolve('elm/binwrappers/elm-make');
 
 class ElmLangCompiler {
@@ -30,7 +31,7 @@ class ElmLangCompiler {
     _compile (file, module) {
         let output = path.join(this.config.output, module + '.js');
         
-        child_process.execFileSync(make, this.config.parameters.concat([
+        cross_spawn.sync(make, this.config.parameters.concat([
             '--output', output, file.path
         ]));
 
