@@ -3,7 +3,6 @@
 var fs = require('fs');
 var url = require('url');
 var path = require('path');
-var child_process = require('child_process');
 var cross_spawn = require('cross-spawn');
 var make = require.resolve('elm/binwrappers/elm-make');
 
