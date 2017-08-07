@@ -30,9 +30,13 @@ class ElmLangCompiler {
     _compile (file, module) {
         let output = path.join(this.config.output, module + '.js');
         
-        cross_spawn.sync(make, this.config.parameters.concat([
+        let result = cross_spawn.sync(make, this.config.parameters.concat([
             '--output', output, file.path
         ]));
+
+        if (result.status) {
+            throw (result.error || new Error('elm-make returned non-zero status code ' + error.status));
+        }
 
         return fs.readFileSync(output, 'utf8');
     }
@@ -77,11 +81,17 @@ class ElmLangCompiler {
     compile (file) {
         let module = this._module(file);
 
+        
         if (this.config['exposed-modules'].indexOf(module) < 0) {
             return Promise.resolve(null);
         } else {
-            file.data = this.config.compile.call(this, file, module);
-            return Promise.resolve(file);
+            try {
+                file.data = this.config.compile.call(this, file, module);
+
+                return Promise.resolve(file);
+            } catch (error) {
+                return Promise.reject(error);
+            }
         }
     }
 
