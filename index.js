@@ -35,7 +35,7 @@ class ElmLangCompiler {
         ]));
 
         if (result.status) {
-            throw (result.error || new Error('elm-make returned non-zero status code ' + error.status));
+            throw (result.error || new Error('elm-make returned non-zero status code ' + result.status));
         }
 
         return fs.readFileSync(output, 'utf8');
