@@ -52,7 +52,7 @@ class ElmLangCompiler {
             document.body.style.backgroundColor = "#000";
             module.exports.Errors.fullscreen(\`${escaped}\`);`;
             
-        child_process.execFileSync(make, this.config.parameters.concat([
+        cross_spawn.sync(make, this.config.parameters.concat([
             '--output', output, errorFile
         ]));
 
